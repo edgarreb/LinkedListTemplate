@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LINKED_LIST
+#define LINKED_LIST
 #include <iostream>
 
 template <typename T>
@@ -18,14 +19,19 @@ class LinkedList {
 	
 	public:
 	
+	LinkedList(void);
+	
 	Node<T>* Head;	
 	Node<T>* ReturnHead(void);	
-
-	LinkedList(void);
 
 	void CreateList(int Size);
 	void PrintList(void);
 
 	bool InsertNode(int Position);
 	bool RemoveNode(int Position);
+	
+	void SetNodes(void);
+	void SetIndividualNode(int Position, T NodeValue);
 };
+
+#endif

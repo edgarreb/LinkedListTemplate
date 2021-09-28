@@ -208,3 +208,73 @@ bool LinkedList<T>::RemoveNode(int Position) {
 
 	return true;
 }
+
+/*
+@Brief - This function allows the user to set each of the nodes in the linked list via
+the console window.
+*/
+template <typename T>
+void LinkedList<T>::SetNodes(void) {
+
+	if(Head == nullptr) {
+		std::cout << "Error: Unable to set nodes in empty list." << std::endl;
+		return;
+	}
+
+	Node<T>* Pointer = Head;
+	T TempValue;
+	int NodeIndex = 0;
+
+	std::cout << std::endl;
+	
+	while(Pointer != nullptr) {
+		
+		std::cout << "Node " << NodeIndex << std::endl;
+		std::cout << "   Enter a value ....  " << std::endl;
+		std::cin >> TempValue;
+		Pointer->SetValue(TempValue);
+
+		Pointer = Pointer->Next;
+		NodeIndex++;
+	}
+
+	std::cout << std::endl;
+
+	return;
+}
+
+/*
+@Brief - This function will set an individual nodes value. If the Node is not in range then
+the function will not set any value. 
+*/
+template <typename T>
+void LinkedList<T>::SetIndividualNode(int Position, T NodeValue) {
+	
+	if(Position < 0) {
+		std::cout << "Error: Unable to set node due to inavlid position." << std::endl;
+		return; 
+	}
+
+	if(Head == nullptr) {
+		std::cout << "Error: Unable to set node in empty list." << std::endl;
+		return;
+	}
+
+	Node<T>* Pointer = Head;
+
+	for(int i = 0; i < Position; i++) {
+		
+		if((i <= Position - 1) && (Pointer->Next == nullptr)) {
+			std::cout << "Error: Unable to set out of range node." << std::endl;
+			return;
+		}
+	
+		Pointer = Pointer->Next;
+	}
+
+	// Insert the value into the Node.
+
+	Pointer->SetValue(NodeValue);
+	
+	return;
+}
