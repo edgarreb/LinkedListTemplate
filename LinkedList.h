@@ -17,6 +17,7 @@ template <typename T>
 class LinkedList {
 	
 	public:
+	
 	Node<T>* Head;	
 	Node<T>* ReturnHead(void);	
 
@@ -24,4 +25,7 @@ class LinkedList {
 
 	void CreateList(int Size);
 	void PrintList(void);
+
+	bool InsertNode(int Position);
+	bool RemoveNode(int Position);
 };

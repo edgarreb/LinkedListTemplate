@@ -1,5 +1,7 @@
 #include "LinkedList.h"
 
+//#define DEBUG
+
 // --- struct Node --- //
 
 /*
@@ -50,21 +52,21 @@ void LinkedList<T>::CreateList(int Size) {
 		return;
 	}
 
-	Node<T>* Pointer2 = nullptr;
+	Node<T>* Pointer = nullptr;
 
 	for(int i = 0; i < Size; i++) {
 		
 		if(i == 0) {
 			this->Head = new Node<T>;
-			Pointer2 = Head;
+			Pointer = Head;
 		}
 		else {
-			Pointer2->Next = new Node<T>;
-			Pointer2 = Pointer2->Next;
+			Pointer->Next = new Node<T>;
+			Pointer = Pointer->Next;
 		}
 
 		if(i == Size - 1) {
-			Pointer2->Next = nullptr;
+			Pointer->Next = nullptr;
 		}
 
 	}
@@ -88,15 +90,121 @@ void LinkedList<T>::PrintList(void) {
 	
 	int NodeIndex = 0;
 
+	std::cout << std::endl;
+
 	while(Pointer != nullptr) {
 		std::cout << "Node " << NodeIndex << std::endl;
 		std::cout << "   Value: " << Pointer->ReturnValue() << std::endl;
-		std::cout << std::endl;
+		
+		#ifdef DEBUG
+			std::cout << "   Address: " << Pointer << std::endl;
+			std::cout << "   Next: " << Pointer->Next << std::endl; 
+		#endif
 
 		Pointer = Pointer->Next;
 		NodeIndex++;
 	}
 
+	std::cout << std::endl;
+
 	return;
 
+}
+
+/*
+@Brief - This function inserts a node at argument Position. If the position is out of range then the 
+insertion will not take place. 
+*/
+template <typename T>
+bool LinkedList<T>::InsertNode(int Position) {
+
+	if(Position < 0) {
+		std::cout << "Error: Invalid insertion position." << std::endl;
+		return false;
+	}
+
+	Node<T>* Pointer = nullptr;
+
+	// This will handle an insertion at the begining.
+	if(Position == 0) {
+		Pointer = new Node<T>;
+		Pointer->Next = Head;
+		Head = Pointer;
+		return true;
+	}
+
+	if(Head == nullptr) {
+		std::cout << "Error: Invalid insertion position." << std::endl;
+		return false;
+	}
+
+	// This will handle an insertion in the middle or at the end
+	
+	Node<T>* PrevNode = nullptr;
+	Node<T>* NextNode = Head;
+	
+	for(int i = 0; i < Position; i++) {
+
+		if((i <= Position - 1) && (NextNode == nullptr)) {
+			std::cout << "Error: Invalid insertion position." << std::endl;
+			return false;
+		}
+
+		PrevNode = NextNode;
+		NextNode = NextNode->Next;
+	}
+
+	PrevNode->Next = new Node<T>;
+	PrevNode = PrevNode->Next;
+	PrevNode->Next = NextNode;
+
+	return true;
+}
+
+/*
+@Brief - This function will delete a given Node at paramater Position. If Position is
+out of range then an error message will be logged to the console.
+*/
+template <typename T>
+bool LinkedList<T>::RemoveNode(int Position) {
+
+	if(Position < 0) {
+		std::cout << "Error: Invalid removal position" << std::endl;
+		return false;
+	}
+	
+	if(Head == nullptr) {
+		std::cout << "Error: Unable to remove node from empty list." << std::endl;
+		return false;
+	}
+
+	// This will handle the removal from the begining.
+
+	if(Position == 0) {
+		Node<T>* Pointer = Head;
+		Head = Head->Next;
+		delete Pointer;
+		return true;		
+	}
+
+	// This will handle a removal of a node from the end or the middle.
+	
+	Node<T>* PrevNode = nullptr;
+	Node<T>* NextNode = Head;
+
+	for(int i = 0; i < Position; i++) {
+
+		if((i <= Position - 1) && (NextNode->Next == nullptr)) {
+			std::cout << "Error: Invalid removal position" << std::endl;
+			return false;
+		}
+		
+		PrevNode = NextNode;
+		NextNode = NextNode->Next;		
+	}
+
+	PrevNode->Next = NextNode->Next;
+	delete NextNode;
+
+	return true;
 }
