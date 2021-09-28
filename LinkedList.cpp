@@ -112,6 +112,49 @@ void LinkedList<T>::PrintList(void) {
 }
 
 /*
+@Brief - This function will reverse the linked list and update the Head member.
+If the reversal is not possible an error message will be logged to the console.
+*/
+
+template <typename T>
+void LinkedList<T>::ReverseList(void) {
+
+	if(Head == nullptr) {
+		std::cout << "Error: Unable to reverse empty list." << std::endl;
+		return;
+	}
+
+	if(Head->Next == nullptr) {
+		std::cout << "Error: Unable to reverse list with single node." << std::endl;
+		return;
+	}
+
+	Node<T>* LeftNode = Head;
+	Node<T>* MiddleNode = LeftNode->Next;
+	Node<T>* RightNode = MiddleNode->Next;
+
+	while(true) {
+
+		// Reverse linked list.
+		MiddleNode->Next = LeftNode;
+		
+		// Handle last Node reversal.
+		if(RightNode == nullptr) {
+			Head->Next = nullptr;
+			Head = MiddleNode;
+			break;
+		}
+	
+		// Shift pointers.
+		LeftNode = MiddleNode;
+		MiddleNode = RightNode;
+		RightNode = RightNode->Next;
+	}
+
+	return;
+}
+
+/*
 @Brief - This function inserts a node at argument Position. If the position is out of range then the 
 insertion will not take place. 
 */
@@ -230,7 +273,7 @@ void LinkedList<T>::SetNodes(void) {
 	while(Pointer != nullptr) {
 		
 		std::cout << "Node " << NodeIndex << std::endl;
-		std::cout << "   Enter a value ....  " << std::endl;
+		std::cout << "Enter a value -->  ";
 		std::cin >> TempValue;
 		Pointer->SetValue(TempValue);
 

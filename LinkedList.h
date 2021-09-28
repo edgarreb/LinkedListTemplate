@@ -26,6 +26,7 @@ class LinkedList {
 
 	void CreateList(int Size);
 	void PrintList(void);
+	void ReverseList(void);
 
 	bool InsertNode(int Position);
 	bool RemoveNode(int Position);
